@@ -17,7 +17,8 @@ environment for hands-on security practice and skill building.
 - Deployed Kali Linux 2026.2 VM
 - Performed initial system update and hardening
 - Ubuntu Server (in progress)
-
+![System Update](Screenshot%202026-07-08%20184007.png)
+![Password Update](Screenshot%202026-07-08%20184521.png)
 ### Phase 2: Active Directory Lab (Coming Soon)
 ### Phase 3: Splunk SIEM (Coming Soon)
 ### Phase 4: TryHackMe SOC Level 1 (In Progress)
