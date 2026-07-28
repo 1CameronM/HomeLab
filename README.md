@@ -18,6 +18,8 @@ environment for hands-on security practice and skill building.
 - Performed initial system update and hardening
 - Deployed Ubuntu Server 26.04 LTS VM
 - Performed initial system update
+![Ubuntu Server Login](1785206485117_image.png)
+![Ubuntu Server Update](1785206471972_image.png)
 - ![System Update](Screenshot%202026-07-08%20184007.png)
 ![Password Update](Screenshot%202026-07-08%20184521.png)
 ### Phase 2: Active Directory Lab (Coming Soon)
