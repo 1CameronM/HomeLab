@@ -16,8 +16,9 @@ environment for hands-on security practice and skill building.
 - Installed and configured Oracle VirtualBox
 - Deployed Kali Linux 2026.2 VM
 - Performed initial system update and hardening
-- Ubuntu Server (in progress)
-![System Update](Screenshot%202026-07-08%20184007.png)
+- Deployed Ubuntu Server 26.04 LTS VM
+- Performed initial system update
+- ![System Update](Screenshot%202026-07-08%20184007.png)
 ![Password Update](Screenshot%202026-07-08%20184521.png)
 ### Phase 2: Active Directory Lab (Coming Soon)
 ### Phase 3: Splunk SIEM (Coming Soon)
