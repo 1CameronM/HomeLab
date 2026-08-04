@@ -11,7 +11,7 @@ Why VirtualBox?
 
 I went with VirtualBox because it's free, open source, and runs well on Windows. It also supports pre-built VM images, which made it the easiest option for a home lab on a personal laptop without spending extra money.
 
-Phase 1: Virtual Machine Setup ✅
+Phase 1: Virtual Machine Setup
 Overview
 
 The goal of Phase 1 was to get the foundation of my home lab up and running. That meant setting up a virtualization platform and installing two virtual machines, Kali Linux and Ubuntu Server. This gives me multiple systems to work with like a real network, which everything else in the lab builds on.
