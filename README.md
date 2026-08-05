@@ -13,7 +13,7 @@ I went with VirtualBox because it's free, open source, and runs well on Windows.
 
 ---
 
-## Phase 1: Virtual Machine Setup
+## Phase 1: Virtual Machine Setup ✅
 
 ### Overview
 The goal of Phase 1 was to get the foundation of my home lab up and running. That meant setting up a virtualization platform and installing two virtual machines, Kali Linux and Ubuntu Server. This gives me multiple systems to work with like a real network, which everything else in the lab builds on.
@@ -66,30 +66,47 @@ Ubuntu Server tried to boot from the network instead of the ISO on the first att
 
 ---
 
-## Phase 2: Active Directory Lab (In Progress)
+## Phase 2: Active Directory Lab ✅
 
 ### Overview
-This phase is about building out a Windows Server domain environment, which is one of the most common setups I'll run into in a real help desk or SOC role. I'm installing Windows Server 2022, promoting it to a Domain Controller, and setting up users, groups, and Group Policy from scratch.
+This phase was about building out a Windows Server domain environment, which is one of the most common setups I'll run into in a real help desk or SOC role. I installed Windows Server 2022, promoted it to a Domain Controller, and set up Organizational Units, users, groups, and Group Policy from scratch.
 
-### Progress So Far
-- Downloaded the Windows Server 2022 Evaluation (free 180 day trial) and created the VM in VirtualBox
-- Installed Windows Server 2022
-- Renamed the server to DC01
+### What Was Built
+- Installed Windows Server 2022 Evaluation and renamed the server to DC01
+- Installed the Active Directory Domain Services (AD DS) role
+- Promoted DC01 to a Domain Controller, creating the domain corp.local
+- Created two Organizational Units: Employees and IT
+- Created user accounts: John Smith (IT) and Sarah Johnson (Employees)
+- Created a security group called IT Staff and added John Smith as a member
+- Created a Group Policy Object called Employee Restrictions and linked it to the Employees OU, configured to prohibit access to Control Panel and PC settings
+
+### Why This Setup
+Organizational Units, security groups, and Group Policy are the building blocks of how real companies manage users and computers in Active Directory. Separating Employees from IT mirrors how a real organization would structure permissions, and the Group Policy Object shows how admins push settings out to a whole group of users at once instead of configuring machines one by one.
 
 ### Issues Encountered and Resolved
 
-**Issue 5: VM Freeze During Restart**
-While restarting DC01 after renaming it, the VM froze and stopped responding. I gave it a few minutes in case it was just working slowly, but it never came back on its own. I used VirtualBox's Machine > Reset option to force a reboot, and it came back up fine with no data loss. The rename to DC01 had also saved correctly. This was probably caused by the VM only having 2048 MB of RAM, which can make restarts look frozen when Windows Server is actually still working in the background.
+**Issue 5: VM Freeze During Domain Controller Promotion**
+The VM froze twice while promoting DC01 to a Domain Controller, both times right after entering the DSRM password and clicking Next. I waited several minutes each time with no change, then used VirtualBox's Machine > Reset to force a reboot. After it happened a second time, I realized the VM was underpowered for this step. I shut the VM down and increased the base memory from 2048 MB to 4096 MB in VirtualBox settings. After the RAM increase, the promotion completed successfully on the next attempt with no freezing.
 
-### Still To Do
-- Install the Active Directory Domain Services role
-- Promote DC01 to a Domain Controller
-- Create the domain corp.local
-- Create users, groups, and Organizational Units
-- Set up Group Policy
+**Issue 6: VM Freeze During Group Creation**
+The VM froze again briefly while creating the IT Staff security group and adding a member. After a Reset, I checked Active Directory Users and Computers and found the group and membership had actually saved correctly before the freeze happened, so no work was lost. This confirmed that these freezes are tied to the VM catching up on background AD DS processes rather than actual crashes.
 
----
+**Issue 7: Shutdown Event Tracker Popups**
+After each forced Reset, Windows Server displayed a Shutdown Event Tracker prompt asking why the computer shut down unexpectedly. This is expected behavior after a hard reset and not an error. I entered a short comment each time (for example, "Lab VM reset during AD DS promotion") and continued.
 
+### What I Learned
+- How to install the AD DS role and promote a server to a Domain Controller
+- How Organizational Units are used to structure users and computers in a domain
+- How to create users and security groups in Active Directory
+- How Group Policy Objects are created and linked to specific OUs to apply settings
+- That VM freezes during resource-heavy operations like domain promotion are often tied to insufficient RAM, and that increasing allocated memory can resolve the issue entirely
+- How to recover safely from a frozen VM using VirtualBox's Reset function without losing configuration work already completed
+
+### Screenshots
+![DC01 Domain Confirmed](dc01-domain-confirmed.png)
+![Active Directory OUs](ad-ous-created.png)
+![IT Staff Group Members](itstaff-group-members.png)
+![Group Policy Editor](gpo-control-panel-restriction.png)
 ## Phase 3: Splunk SIEM (Coming Soon)
 
 ## Phase 4: TryHackMe SOC Level 1 (In Progress)
@@ -99,6 +116,9 @@ While restarting DC01 after renaming it, the VM froze and stopped responding. I 
 - Linux command line basics
 - System hardening
 - Windows Server administration
+- Active Directory Domain Services (AD DS)
+- Group Policy configuration
+- VM troubleshooting and resource management
 
 ## Goals
 Building practical skills for help desk and SOC analyst roles in the DMV region.
