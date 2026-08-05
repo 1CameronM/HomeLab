@@ -66,7 +66,7 @@ Ubuntu Server tried to boot from the network instead of the ISO the first time. 
 
 ---
 
-## Phase 2: Active Directory Lab ✅
+## Phase 2: Active Directory Lab 
 
 ### Overview
 This phase was about building out a Windows Server domain environment, which is one of the most common setups I'll run into in a real help desk or SOC role. I installed Windows Server 2022, promoted it to a Domain Controller, and set up Organizational Units, users, groups, and Group Policy from scratch.
@@ -103,10 +103,10 @@ Every time I had to force a Reset, Windows Server showed a Shutdown Event Tracke
 - How to recover a frozen VM safely using VirtualBox's Reset function without losing work that already saved
 
 ### Screenshots
-![DC01 Domain Confirmed](dc01-domain-confirmed.png)
-![Active Directory OUs](ad-ous-created.png)
-![IT Staff Group Members](itstaff-group-members.png)
-![Group Policy Editor](gpo-control-panel-restriction.png)
+![DC01 Domain Confirmed](dc01-domain-confirmed.png.png)
+![Active Directory OUs](ad-ous-created.png.png)
+![IT Staff Group Members](itstaff-group-members.png.png)
+![Group Policy Editor](gpo-control-panel-restriction.png.png)
 
 ---
 
