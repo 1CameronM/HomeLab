@@ -110,7 +110,62 @@ Every time I had to force a Reset, Windows Server showed a Shutdown Event Tracke
 
 ---
 
-## Phase 3: Splunk SIEM (Coming Soon)
+## Phase 3: Splunk SIEM ✅
+
+### Overview
+This phase was about setting up a SIEM, which is the platform SOC analysts actually live in day to day. I installed Splunk Enterprise directly on my Windows 11 host, pulled in Windows Event Logs, installed Sysmon for deeper visibility, and practiced writing the kind of searches an analyst runs constantly , failed logins, account lockouts, and new user creation. I also attempted to forward logs from DC01 into Splunk to simulate a small centralized logging setup.
+
+### What Was Built
+- Installed Splunk Enterprise 10.4.2 natively on my Windows 11 host
+- Configured local Windows Event Log collection for Application, Security, and System logs
+- Ran core SOC searches by Event Code: 4625 (failed logon), 4740 (account lockout), and 4720 (new user creation)
+- Triggered a real failed login on purpose to confirm end-to-end log flow, from the event happening to it showing up in a Splunk search
+- Installed Sysmon using the SwiftOnSecurity community config, which is the industry-standard starting point for Sysmon deployments
+- Manually added the Sysmon log channel (Microsoft-Windows-Sysmon/Operational) to Splunk's inputs.conf after it didn't show up automatically in the UI
+- Confirmed Sysmon data flowing into Splunk, over 10,000 events indexed within minutes
+- Installed the Splunk Universal Forwarder on DC01 and attempted to connect it to my host's Splunk instance to centralize log collection across both machines
+
+### Why This Setup
+A SIEM is really the core tool of the SOC analyst job. Knowing how to get data into one, and more importantly how to query it for the right event codes, is the single skill that comes up again and again in this line of work. Sysmon matters on top of that because default Windows logging only tells you that something happened, while Sysmon tells you the full picture, like the exact command line a process ran with. Forwarding DC01's logs was meant to simulate what a real environment looks like, multiple machines all feeding into one central SIEM instead of everyone just watching their own local logs.
+
+### Issues Encountered and Resolved
+
+**Issue 8: Config File Downloaded as HTML Instead of XML**
+When I first downloaded the SwiftOnSecurity Sysmon config, the browser saved the GitHub page view instead of the actual file, so it came through as an HTML file instead of XML. Sysmon's install command needs real XML to parse. I fixed it by going to the raw version of the file on GitHub and saving that directly, which gave me the actual XML content instead of a rendered webpage.
+
+**Issue 9: Sysmon Log Channel Not Showing Up in Splunk**
+After installing Sysmon, its log channel didn't appear in Splunk's list of available Windows Event Logs, even after restarting Splunk. Rather than keep waiting on the UI to pick it up, I added the input manually by editing inputs.conf directly in Splunk's config folder and pointing it at Microsoft-Windows-Sysmon/Operational. Restarted Splunk and the Sysmon data started flowing in immediately.
+
+**Issue 10: Wrong Assumed Install Path for Splunk**
+While looking for Splunk's config folder, I guessed at a path that didn't actually exist on my system. I used Command Prompt to list what was actually inside Program Files, which showed me the real Splunk folder name and let me navigate to the right location instead of guessing.
+
+**Issue 11: Access Denied Editing Splunk Config Files**
+A regular Command Prompt window couldn't get into the Splunk config folder under Program Files, it returned "Access is denied." Reopened Command Prompt as Administrator, and that resolved it immediately, Program Files folders need elevated permissions to modify.
+
+**Issue 12: DC01 Couldn't Access Shared Folder for File Transfer**
+I tried setting up a VirtualBox shared folder to move the Universal Forwarder installer onto DC01, but DC01 couldn't connect to it at all. Turned out DC01 never had VirtualBox Guest Additions installed, which is required for shared folders to work. Installed Guest Additions from the VirtualBox Devices menu, restarted DC01, and the shared folder connected successfully after that.
+
+**Issue 13: Universal Forwarder Blocked Remote Login with Default Credentials**
+After installing the Universal Forwarder on DC01, I tried to point it at my host's Splunk instance using the command line, but kept getting login errors. It turned out this wasn't a typo issue, Splunk actually blocks remote login for the admin account when it still has default credentials, as a built-in security protection. I wasn't able to fully resolve this in the time I had, so DC01's logs are not yet forwarding into Splunk. This is a good example of running into an intentional security control rather than a bug, and it's the next thing I plan to sort out.
+
+### What I Learned
+- How to install Splunk Enterprise and get real Windows Event Log data flowing into it
+- How to write basic SPL searches using specific Windows Event Codes to find security-relevant activity
+- How to trigger and verify a real security event end-to-end, not just search for hypothetical data
+- What Sysmon adds on top of default Windows logging and why analysts rely on it
+- How to troubleshoot a data source that isn't showing up in Splunk's UI by editing inputs.conf directly
+- The difference between a regular and Administrator Command Prompt when working with protected folders like Program Files
+- That VirtualBox shared folders require Guest Additions to be installed inside the guest VM
+- That Splunk has built-in protections against remote login with default credentials, and why that matters from a security standpoint
+
+### Screenshots
+![Splunk Installed](splunk-installed.png)
+![Windows Event Logs Indexed](windows-eventlogs-indexed.png)
+![Failed Login Search](failed-login-search.png)
+![Sysmon Installed](sysmon-installed.png)
+![Sysmon Events Indexed](sysmon-events-indexed.png)
+
+---
 
 ## Phase 4: TryHackMe SOC Level 1 (In Progress)
 
@@ -122,6 +177,10 @@ Every time I had to force a Reset, Windows Server showed a Shutdown Event Tracke
 - Active Directory Domain Services (AD DS)
 - Group Policy configuration
 - VM troubleshooting and resource management
+- SIEM deployment and configuration (Splunk)
+- Windows Event Log analysis and SPL search writing
+- Sysmon installation and configuration
+- General Windows/Linux troubleshooting, file permissions, and command line navigation
 
 ## Goals
 Building practical skills for help desk and SOC analyst roles in the DMV region.
