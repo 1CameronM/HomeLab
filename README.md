@@ -110,7 +110,7 @@ Every time I had to force a Reset, Windows Server showed a Shutdown Event Tracke
 
 ---
 
-## Phase 3: Splunk SIEM ✅
+## Phase 3: Splunk SIEM 
 
 ### Overview
 This phase was about setting up a SIEM, which is the platform SOC analysts actually live in day to day. I installed Splunk Enterprise directly on my Windows 11 host, pulled in Windows Event Logs, installed Sysmon for deeper visibility, and practiced writing the kind of searches an analyst runs constantly , failed logins, account lockouts, and new user creation. I also attempted to forward logs from DC01 into Splunk to simulate a small centralized logging setup.
